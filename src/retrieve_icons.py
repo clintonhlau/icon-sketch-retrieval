@@ -1,6 +1,6 @@
 import os, pickle, numpy as np, clip, torch
 from sklearn.neighbors import NearestNeighbors
-from preprocess import SketchPreprocessor
+from src.sketch_preprocessor import SketchPreprocessor
 
 BASE = os.path.dirname(os.path.dirname(__file__))
 EMBED = os.path.join(BASE, "data", "icons_embeddings.npy")
@@ -12,9 +12,12 @@ class IconRetriever:
         self.device = device
         self.model, self.preprocess = clip.load("ViT-B/32", device=device)
         self.embs = np.load(EMBED)
-        with open(NAMES, "rb") as f: self.names = pickle.load(f)
-        with open(KNN_IDX, "rb") as f: self.knn = pickle.load(f)
-        self.sketch_pp = SketchPreprocessor(target_size=self.preprocess.transform[-1].size)
+        with open(NAMES, "rb") as f: 
+            self.names = pickle.load(f)
+        with open(KNN_IDX, "rb") as f: 
+            self.knn = pickle.load(f)
+        
+        self.sketch_pp = SketchPreprocessor(target_size=(224, 224))
 
     def retrieve(self, sketch, k=5):
         proc = self.sketch_pp(sketch)
