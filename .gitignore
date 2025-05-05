@@ -1,0 +1,10 @@
+# Virtual environment
+.venv/
+
+# Data and archives
+/data/icons/
+/material-design-icons-master.zip
+
+# Python cache
+__pycache__/
+*.pyc
